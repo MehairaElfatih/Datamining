@@ -25,6 +25,5 @@ if (ausgewahltet_Modell == 1):
     modell = SVC(C=C,kernel=kernel,degree=3,gamma=gamma,class_weight=class_weight,coef0=coef0,max_iter=max_iter)
 
 
-print(path.abspath(path.curdir + '/../../Daten/erweitert/'))
 cv= kv.validation(modell,kflod)
 cv.kreuzvalidierng_model()

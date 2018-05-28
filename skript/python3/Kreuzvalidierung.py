@@ -28,12 +28,7 @@ class validation:
 
     def kreuzvalidierng_model(self):
         ResubtiotionFehler=[]
-        #anfang des Fitting
-        #print(self.y_train)
-        le = LabelEncoder()
-        self.X_train = le.fit_transform(self.X_train )
-        lb = LabelBinarizer()
-        self.y_train = lb.fit_transform(self.y_train)
+        # Anfang des Fitting
         clf = self.learning_model.fit(self.X_train,self.y_train)
         #Ende des Fitting
         # Anfang der Kreuzvalidierung
