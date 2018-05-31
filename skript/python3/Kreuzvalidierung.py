@@ -2,6 +2,7 @@ from sklearn.preprocessing import LabelEncoder,LabelBinarizer
 import pandas as pd
 import numpy as np
 from os import path
+import time
 from sklearn.model_selection import cross_val_score
 
 path_erweiter  = path.curdir + '/../../Daten/erweitert/'
@@ -27,12 +28,15 @@ class validation:
 
 
     def kreuzvalidierng_model(self):
-        ResubtiotionFehler=[]
         # Anfang des Fitting
+        startTime = time.time()
         clf = self.learning_model.fit(self.X_train,self.y_train)
+        endTime = time.time();
+        dauert = endTime - startTime
         #Ende des Fitting
         # Anfang der Kreuzvalidierung
         scores = cross_val_score(clf,self.X_train,self.y_train,scoring='precision_macro', cv = self.kflod)
         # Ende der Kreuzvalidierung
-        print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+        #print("Accuracy: %0.2f : testFehler: %0.2f , in %0.5f" % (scores.mean(), 1-scores.mean(), dauert))
+        return dauert, scores
 
