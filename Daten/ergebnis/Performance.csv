@@ -1,0 +1,4 @@
+Acuracy;Parameter;TestFehle;name
+0.9211309523809523;4,distance,-1,auto;0.07886904761904767;KNeighborsClassification
+0.9213888888888888;5,distance,-1,auto;0.07861111111111119;KNeighborsClassification
+0.8580357142857142;criterion:gini,splitterbest,max_depth9;0.14196428571428577;DecisionTreeClassifier

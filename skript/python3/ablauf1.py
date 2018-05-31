@@ -1,8 +1,9 @@
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 import numpy as np
 import Kreuzvalidierung as kv
-from os import path
+
 
 """
 Parameter fuer jedes Modell Eingeben Und dann Modell Trainieren 
@@ -20,26 +21,38 @@ max_iter=-1             #
 
 # KNeighborsRegressor______ Modell 2 __________________________
 n_neighbors_knn = 5 # Anzahl Nachbarn
-weights_knn = 'uniform'  # Moegliche Werte: 'uniform','distance'
+weights_knn = 'distance'  # Moegliche Werte: 'uniform','distance'
 prozessor_kerne_knn = -1  # -1 Bedeutet, dass die maximale Anzahl an CPU-Kernen benutzt wird
-algorithm = 'ball_tree' #{‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, optional
+algorithm = 'auto' #{‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, optional
+
+# ____ Decision Tree Classificator_____________________________
+#modell 3
+criterion ='gini' # #criterion : string, optional (default=”gini”  impurity and “entropy”)
+splitter = 'best'#splitter : string, optional (default=”best” random)
+max_depth = 9 #max_depth : int or None, optional (default=None)
 
 #___________________________________________________________________________________________________________________
 kflod = 10
-ausgewahltet_Modell = 1
-ModellParam = {}
+ausgewahltet_Modell = 3
 
 if (ausgewahltet_Modell == 1):
-    modell = SVC(C=C,kernel=kernel,degree=3,gamma=gamma,class_weight=class_weight,coef0=coef0,max_iter=max_iter)
+    ModellName = 'SVC'
+    modell = SVC(C=C,kernel=kernel,degree=degree,gamma=gamma,class_weight=class_weight,coef0=coef0,max_iter=max_iter)
+    Parameter ='C:'+ str(C) + 'kenel:' + str(kernel) + ' degree:' + str(degree)+' gamma :' + str(gamma) + 'class_weight:' + str(class_weight) + ' coef0:' + str(coef0)\
+        + ' max_iter :' + str(max_iter)
 if (ausgewahltet_Modell == 2):
     modell = KNeighborsClassifier(n_neighbors= n_neighbors_knn,weights=weights_knn,n_jobs=prozessor_kerne_knn, algorithm=algorithm)
-    ModellParam['Name'] = 'KNeighborsClassification'
-    ModellParam['n_neighbors'] = n_neighbors_knn
-    ModellParam['weights_knn'] = weights_knn
-    ModellParam['prozessor_kerne_knn'] = prozessor_kerne_knn
-    ModellParam['algorithm'] = algorithm
+    ModellName = 'KNeighborsClassification'
+    Parameter = ' n_neighbors:'+ str(n_neighbors_knn) + ',weights:'+ str(weights_knn) + ',n_jobs:'+ str(prozessor_kerne_knn) + ',algorithm:'+ algorithm
+if (ausgewahltet_Modell == 3):
+    ModellName = 'DecisionTreeClassifier'
+    modell = DecisionTreeClassifier(criterion= criterion,splitter=splitter,max_depth=max_depth)
+    Parameter = 'criterion:' + str(criterion) + ',splitter' + str(splitter) + ',max_depth' + str(max_depth)
 
 cv= kv.validation(modell,kflod)
 dauert, scoresMean =cv.kreuzvalidierng_model()
-print("Accuracy: %0.2f : testFehler: %0.2f , in %0.5f" % (np.mean(scoresMean), 1-np.mean(scoresMean), dauert))
-print(ModellParam)
+
+ModellParamdict = {'name': ModellName, 'Acuracy': np.mean(scoresMean) , 'TestFehle': 1-np.mean(scoresMean),'Parameter': Parameter }
+
+
+cv.writePerformanceModell(ModellParamdict)

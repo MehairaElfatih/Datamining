@@ -6,6 +6,7 @@ import time
 from sklearn.model_selection import cross_val_score
 
 path_erweiter  = path.curdir + '/../../Daten/erweitert/'
+path_ergebnis  = path.curdir + '/../../Daten/ergebnis/Performance.csv'
 
 ReadTrainMeasure = pd.read_csv(path_erweiter +'TrainMeasure.csv', sep=';')
 ReadTestMeasure = pd.read_csv(path_erweiter +'TrainMeasure.csv', sep=';')
@@ -40,3 +41,7 @@ class validation:
         #print("Accuracy: %0.2f : testFehler: %0.2f , in %0.5f" % (scores.mean(), 1-scores.mean(), dauert))
         return dauert, scores
 
+    def writePerformanceModell(self,ModellParmeter):
+        Perform = pd.DataFrame(ModellParmeter, index=[0])
+        Perform.to_csv(path_ergebnis, sep=';', mode= 'a', header= False, index=False)
+        print(Perform)

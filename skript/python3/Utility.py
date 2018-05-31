@@ -2,16 +2,17 @@ from builtins import print
 from os import path
 import pandas as pd
 import numpy as np
-import csv
 
 #read files
 
 path_orignalFiles = path.curdir + '/../../Daten/original/'
 
 path_erweiter  = path.curdir + '/../../Daten/erweitert/'
+path_ergebnis  = path.curdir + '/../../Daten/ergebnis/'
 
 ReadMeasure = pd.read_csv(path_erweiter +'measures_Formatiert.csv', sep=';')
 ReadToPedict = pd.read_csv(path_orignalFiles +'to_predict.csv', sep=';')
+
 #ReadTrainMeasure = pd.read_csv(path_erweiter +'TrainMeasure.csv', sep=';')
 #ReadTestMeasure = pd.read_csv(path_erweiter +'TestMeasure.csv', sep=';')
 
@@ -99,7 +100,9 @@ def Datatype_wiedererstellung(df):
     # print(ReadMeasure)
     return  ReadMeasure
 
-def writePerformanceModell (ModellParmeter, score, dauert):
-    pass
+def writePerformanceModell (ModellParmeter):
+    #df = pd.DataFrame.from_dict(ModellParmeter, orient='index')
+    #df.columns = ModellParmeter.
+    Perform = pd.DataFrame(ModellParmeter)
+    print(Perform)
 
-create_test_train_data()
