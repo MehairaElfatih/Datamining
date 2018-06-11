@@ -1,72 +1,146 @@
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 import numpy as np
 import Kreuzvalidierung as kv
+import Utility as uty
+import Explorative as ex
+from os import path
+import pandas as pd
 
-
-"""
-Parameter fuer jedes Modell Eingeben Und dann Modell Trainieren 
-"""
-
-#_SVC___________________________________________________________________________
-# modell 1
-C=1.0                   # der Parameter der  Sanktion vom dem Fehler (1.0 ist der max  value)
-#class_weight=0     #
-coef0=0.0               # nur für poly and sigmoid kernel nötig
-degree=3                # nur bei Polynomial kernel anwendbar
-gamma='auto'            # Kernel Coeffient (rbf,poly, and sigmoid) rbf und Signoid sind schlescht
-kernel='linear'            #
-max_iter=-1             #
-
-# KNeighborsRegressor______ Modell 2 __________________________
-n_neighbors_knn = 2 # Anzahl Nachbarn
-weights_knn = 'distance'  # Moegliche Werte: 'uniform','distance'
-prozessor_kerne_knn = -1  # -1 Bedeutet, dass die maximale Anzahl an CPU-Kernen benutzt wird
-algorithm = 'ball_tree' #{‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, optional
-
-# ____ Decision Tree Classificator_____________________________
-#modell 3
-criterion ='entropy' # #criterion : string, optional (default=”gini”  impurity and “entropy”)
-splitter = 'random'#splitter : string, optional (default=”best” random)
-max_depth = 5 #max_depth : int or None, optional (default=None)
-
-#_______________MlPClassifier____________________________________________________________________
-hidden_layer_sizes = (100,) #hidden_layer_sizes : tuple, length = n_layers - 2, default (100,)
-activation = 'relu'  #activation : {‘identity’, ‘logistic’, ‘tanh’, ‘relu’}, default ‘relu’
-solver = 'sgd' #solver : {‘lbfgs’, ‘sgd’, ‘adam’}, default ‘adam’
-alpha = 0.00001
-learnin_rate = 'adaptive'  # learning_rate : {‘constant’, ‘invscaling’, ‘adaptive’}, default ‘constant’
-momentum = 0.5 #momentum : float, default 0.9 [0,1]
-#
 #___________________________________________________________________________________________________________________
 kflod = 5
-ausgewahltet_Modell = 4
 
-if (ausgewahltet_Modell == 1):
-    ModellName = 'SVC'
-    modell = SVC(C=C,kernel=kernel,degree=degree,gamma=gamma,coef0=coef0,max_iter=max_iter)
-    Parameter ='C ='+ str(C) + 'kenel =' + str(kernel) + ' degree =' + str(degree)+' gamma =' + str(gamma) + 'class_weight ='  + ' coef0 =' + str(coef0)\
-        + ' max_iter :' + str(max_iter)
-if (ausgewahltet_Modell == 2):
-    modell = KNeighborsClassifier(n_neighbors= n_neighbors_knn,weights=weights_knn,n_jobs=prozessor_kerne_knn, algorithm=algorithm)
-    ModellName = 'KNeighborsClassification'
-    Parameter = ' n_neighbors ='+ str(n_neighbors_knn) + ',weights ='+ str(weights_knn) + ',n_jobs ='+ str(prozessor_kerne_knn) + ',algorithm ='+ algorithm
-if (ausgewahltet_Modell == 3):
-    ModellName = 'DecisionTreeClassifier'
-    modell = DecisionTreeClassifier(criterion= criterion,splitter=splitter,max_depth=max_depth)
-    Parameter = 'criterion =' + str(criterion) + ',splitter =' + str(splitter) + ',max_depth =' + str(max_depth)
-if(ausgewahltet_Modell == 4):
-    ModellName = 'MLPClassifier'
-    modell = MLPClassifier(hidden_layer_sizes= hidden_layer_sizes, activation = activation, solver=solver, alpha=alpha, learning_rate=learnin_rate, momentum=momentum)
-    Parameter = 'hidden_layer_sizes =' + str(hidden_layer_sizes) + 'activation = ' + activation + 'solver = '+ solver + ' alpha =' + str(alpha) + 'learning_rate=' + learnin_rate + 'momentum = ' + str(momentum)
-cv= kv.validation(modell,kflod)
-dauert, scoresMean =cv.kreuzvalidierng_model()
+for modell in range(1,5):
+    ausgewahltet_Modell = modell
 
-ModellParamdict = {'name': ModellName, 'Acuracy': np.mean(scoresMean) , 'TestFehle': 1-np.mean(scoresMean),'Parameter': Parameter }
+    if (ausgewahltet_Modell == 1):
+        # _SVC___________________________________________________________________________
+        C = 1.0  # der Parameter der  Sanktion vom dem Fehler (1.0 ist der max  value)
+        degree = [1, 2, 3, 4, 5, 6, 9, 10]  # nur bei Polynomial kernel anwendbar
+        gamma = 'auto'  # float, optional (default=’auto’)
+        coef0 = 0.0
+        kernel = ['linear', 'poly', 'rbf', 'sigmoid']  # ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid  ['linear', 'poly', 'rbf', 'sigmoid']
 
+        ModellName = 'SVC'
+        for kern in kernel:
+            for dg in degree:
+                print(dg)
+                for rd_st in range(1,10):
+                        print(kern)
+                        modell = SVC(C=C, kernel=kern, gamma=gamma, degree= dg,coef0=coef0, random_state =rd_st,max_iter=-1)
+                        Parameter = 'C =' + str(C) + '  kenel =' + str(kern) + '  gamma =' + str(
+                            gamma)  + '  coef0 =' + str(coef0) \
+                                    + '   random_state :' + str(rd_st) + '  max_iter :' + str(-1) + ' degree = ' + str(dg)
 
-cv.writePerformanceModell(ModellParamdict)
+                        cv = kv.validation(modell, kflod)
+                        dauert, scoresMean = cv.kreuzvalidierng_model()
+
+                        ModellParamdict = {'name': ModellName, 'Acuracy': np.mean(scoresMean),
+                                           'TestFehle': 1 - np.mean(scoresMean), 'Parameter': Parameter}
+
+                        perf = uty.Utility()
+                        perf.writePerformanceModell(ModellParamdict)
+
+    if (ausgewahltet_Modell == 2):
+        # KNeighborsRegressor______ Modell 2 __________________________
+        n_neighbors_knn = [2, 3, 4, 5, 6, 7, 8, 9, 10]  # Anzahl Nachbarn
+        weights_knn = ['uniform', 'distance']  # Moegliche Werte: 'uniform','distance'
+        prozessor_kerne_knn = -1  # -1 Bedeutet, dass die maximale Anzahl an CPU-Kernen benutzt wird
+        algorithm = ['auto', 'ball_tree', 'kd_tree', 'brute']  # {‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}, optional
+        ModellName = 'KNeighborsClassification'
+        for neigbor in n_neighbors_knn:
+            for weight in weights_knn:
+                for alg in algorithm:
+                    modell = KNeighborsClassifier(n_neighbors=neigbor, weights=weight, n_jobs=prozessor_kerne_knn,
+                                                  algorithm=alg)
+                    Parameter = ' n_neighbors =' + str(neigbor) + ',weights =' + str(weight) + ',n_jobs =' + str(
+                        prozessor_kerne_knn) + ',algorithm =' + alg
+
+                    cv = kv.validation(modell, kflod)
+                    dauert, scoresMean = cv.kreuzvalidierng_model()
+
+                    ModellParamdict = {'name': ModellName, 'Acuracy': np.mean(scoresMean),
+                                       'TestFehle': 1 - np.mean(scoresMean), 'Parameter': Parameter}
+
+                    perf = uty.Utility()
+                    perf.writePerformanceModell(ModellParamdict)
+    if (ausgewahltet_Modell == 3):
+        # ____ Decision Tree Classificator_____________________________
+        # modell 3
+        ModellName = 'DecisionTreeClassifier'
+        criterion = ['entropy', 'gini']  # #criterion : string, optional (default=”gini”  impurity and “entropy”)
+        splitter = ['random', 'best', ]  # splitter : string, optional (default=”best” random)
+        max_depth = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+                     30]  # max_depth : int or None, optional (default=None)
+        for deph in max_depth:
+            for crit in criterion:
+                for split in splitter:
+                    modell = DecisionTreeClassifier(criterion=crit, splitter=split, max_depth=deph)
+                    Parameter = 'criterion =' + str(crit) + ',splitter =' + str(split) + ',max_depth =' + str(
+                        deph)
+
+                    cv = kv.validation(modell, kflod)
+                    dauert, scoresMean = cv.kreuzvalidierng_model()
+
+                    ModellParamdict = {'name': ModellName, 'Acuracy': np.mean(scoresMean),
+                                       'TestFehle': 1 - np.mean(scoresMean), 'Parameter': Parameter}
+
+                    perf = uty.Utility()
+                    perf.writePerformanceModell(ModellParamdict)
+
+    if (ausgewahltet_Modell == 4):
+        # _______________MlPClassifier____________________________________________________________________
+        hidden_layer_sizes = [(10,)]  # hidden_layer_sizes : tuple, length = n_layers - 2, default (100,)
+        activation = 'relu'  # activation : {‘identity’, ‘logistic’, ‘tanh’, ‘relu’}, default ‘relu’
+        solver = ['sgd', 'lbfgs', 'adam']  # solver : {‘lbfgs’, ‘sgd’, ‘adam’}, default ‘adam’
+        alpha = [0.00001, 0.001, 0.000001, 0.0000001]
+        learnin_rate = ['adaptive', 'constant',
+                        'invscaling']  # learning_rate : {‘constant’, ‘invscaling’, ‘adaptive’}, default ‘constant’
+        momentum = [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]  # momentum : float, default 0.9 [0,1]
+        ModellName = 'MLPClassifier'
+
+        for i in range(50, 100):
+            for sl in solver:
+                for al in alpha:
+                    for mom in momentum:
+                        for learnin in learnin_rate:
+                            modell = MLPClassifier(hidden_layer_sizes=(i,), activation=activation, solver=sl, alpha=al,
+                                                   learning_rate=learnin, momentum=mom)
+                            Parameter = 'hidden_layer_sizes =' + str(
+                                (i,)) + 'activation = ' + activation + 'solver = ' + sl + ' alpha =' + str(
+                                al) + 'learning_rate=' + learnin + 'momentum = ' + str(mom)
+
+                            cv = kv.validation(modell, kflod)
+                            dauert, scoresMean = cv.kreuzvalidierng_model()
+
+                            ModellParamdict = {'name': ModellName, 'Acuracy': np.mean(scoresMean),
+                                               'TestFehle': 1 - np.mean(scoresMean), 'Parameter': Parameter}
+                            perf = uty.Utility()
+                            perf.writePerformanceModell(ModellParamdict)
+    if (ausgewahltet_Modell == 5):
+        # modell 5
+        ModellName = 'Random Forest'
+        criterion = ['entropy', 'gini']  # #criterion : string, optional (default=”gini”  impurity and “entropy”)
+        splitter = ['random', 'best', ]  # splitter : string, optional (default=”best” random)
+        # max_depth : int or None, optional (default=None)
+        for deph in range(5, 30):
+            for crit in criterion:
+                for estimator in range(1, 30):
+                    modell = RandomForestClassifier(n_estimators=estimator, criterion=crit, max_depth=deph,
+                                                    max_features='auto')
+                    Parameter = 'n_estimators = ' + str(estimator) + ' criterion =' + str(crit) + ',max_depth =' + str(
+                        deph) + 'max_features =' + 'auo'
+
+                    cv = kv.validation(modell, kflod)
+                    dauert, scoresMean = cv.kreuzvalidierng_model()
+
+                    ModellParamdict = {'name': ModellName, 'Acuracy': np.mean(scoresMean),
+                                       'TestFehle': 1 - np.mean(scoresMean), 'Parameter': Parameter}
+
+                    perf = uty.Utility()
+                    perf.writePerformanceModell(ModellParamdict)
 
 #cv.generated_model()

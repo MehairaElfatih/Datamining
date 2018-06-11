@@ -29,7 +29,6 @@ class validation:
         # Anfang des Fitting
         # print(self.X_train.dtypes)
         startTime = time.time()
-
         clf = self.learning_model.fit(self.X_train, self.y_train)
         endTime = time.time()
         dauert = endTime - startTime
@@ -41,18 +40,14 @@ class validation:
         return dauert, scores
 
     def generated_model(self):
-
         ReadTrainMeasure = pd.read_csv(path_erweiter + 'TrainMeasure.csv', sep=';', decimal=',')
-        ReadTrainMeasure = ReadTrainMeasure.drop(['P-KennungAnonym'], axis=1)
         train, test = train_test_split(ReadTrainMeasure, test_size=0.2)
-        X_train = train.loc[:, train.columns != 'P-Altersklasse']
+        X_train = train
         y_train = train['P-Altersklasse']
+        startTime = time.time()
         clf = self.learning_model.fit(X_train, y_train)
+        endTime = time.time()
+        dauert = endTime - startTime
         scores = clf.predict(test)
-
-
-    def writePerformanceModell(self, ModellParmeter):
-        Perform = pd.DataFrame(ModellParmeter, index=[0])
-        Perform.to_csv(path_ergebnis, sep=';', mode='a', header=False, index=False)
-
-        print(Perform)
+        print(" Predicted generated Model")
+        print(scores)
