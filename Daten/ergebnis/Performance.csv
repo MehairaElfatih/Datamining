@@ -1,4 +1,41 @@
 Acuracy;Parameter;TestFehle;name
-0.9211309523809523;4,distance,-1,auto;0.07886904761904767;KNeighborsClassification
-0.9213888888888888;5,distance,-1,auto;0.07861111111111119;KNeighborsClassification
-0.8580357142857142;criterion:gini,splitterbest,max_depth9;0.14196428571428577;DecisionTreeClassifier
+0.7301396866397374; n_neighbors:3,weights:distance,n_jobs:-1,algorithm:brute;0.2698603133602626;KNeighborsClassification
+0.7307216004168651; n_neighbors:5,weights:distance,n_jobs:-1,algorithm:ball_tree;0.26927839958313493;KNeighborsClassification
+0.7185355647323413; n_neighbors:10,weights:distance,n_jobs:-1,algorithm:ball_tree;0.28146443526765874;KNeighborsClassification
+0.7209386340818484; n_neighbors:2,weights:distance,n_jobs:-1,algorithm:ball_tree;0.27906136591815156;KNeighborsClassification
+0.6784704798053227;criterion:entropy,splitterrandom,max_depth9;0.3215295201946773;DecisionTreeClassifier
+0.6759911791034037;criterion:entropy,splitterrandom,max_depth9;0.32400882089659633;DecisionTreeClassifier
+0.6814081065454729;criterion:entropy,splitterrandom,max_depth9;0.3185918934545271;DecisionTreeClassifier
+0.6745246830618835;criterion:entropy,splitterrandom,max_depth9;0.3254753169381165;DecisionTreeClassifier
+0.6718909530519642;criterion:entropy,splitterrandom,max_depth9;0.3281090469480358;DecisionTreeClassifier
+0.681443892680848;criterion =entropy,splitter =random,max_depth =9;0.31855610731915196;DecisionTreeClassifier
+0.6832816174360463;criterion =entropy,splitter =random,max_depth =10;0.3167183825639537;DecisionTreeClassifier
+0.5143123085922053;criterion =entropy,splitter =random,max_depth =5;0.48568769140779466;DecisionTreeClassifier
+0.7140467927621204;C =1.0kenel =linear degree =3 gamma =autoclass_weight = coef0 =0.0 max_iter :-1;0.28595320723787965;SVC
+0.12596965054206297;C =1.0kenel =rbf degree =3 gamma =autoclass_weight = coef0 =0.0 max_iter :-1;0.874030349457937;SVC
+0.7455062825618715;C =1.0kenel =poly degree =3 gamma =autoclass_weight = coef0 =0.0 max_iter :-1;0.25449371743812854;SVC
+0.7276227413988073;C =1.0kenel =poly degree =6 gamma =autoclass_weight = coef0 =0.0 max_iter :-1;0.27237725860119266;SVC
+0.12596965054206297;C =1.0kenel =sigmoid degree =6 gamma =autoclass_weight = coef0 =0.0 max_iter :-1;0.874030349457937;SVC
+0.6298482527103146;C =1.0kenel =sigmoid degree =6 gamma =autoclass_weight = coef0 =0.0 max_iter :-1;0.37015174728968536;SVC
+0.7187985690644183;C =1.0kenel =linear degree =3 gamma =autoclass_weight = coef0 =0.0 max_iter :-1;0.2812014309355817;SVC
+0.554923398340514;hidden_layer_sizes =(13, 15)activation = relusolver = sgd alpha =0.0001learning_rate=constant;0.44507660165948604;MLPClassifier
+0.6250453926524122;hidden_layer_sizes =(13, 15)activation = relusolver = sgd alpha =0.0001learning_rate=adaptive;0.3749546073475878;MLPClassifier
+0.6316910005876559;hidden_layer_sizes =(13, 15)activation = relusolver = sgd alpha =0.001learning_rate=adaptive;0.3683089994123441;MLPClassifier
+0.6365077098800686;hidden_layer_sizes =(13, 15)activation = relusolver = sgd alpha =0.01learning_rate=adaptive;0.36349229011993145;MLPClassifier
+0.6316863103761274;hidden_layer_sizes =(13, 15)activation = relusolver = sgd alpha =1e-08learning_rate=adaptive;0.36831368962387256;MLPClassifier
+0.6297586334378975;hidden_layer_sizes =(5,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptive;0.3702413665621025;MLPClassifier
+0.5476508804970182;hidden_layer_sizes =(100,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptive;0.45234911950298184;MLPClassifier
+0.6416881042228668;hidden_layer_sizes =(50,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptive;0.3583118957771332;MLPClassifier
+0.6086802020653485;hidden_layer_sizes =(34,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptive;0.39131979793465155;MLPClassifier
+0.6366025248406124;hidden_layer_sizes =(60,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptive;0.3633974751593876;MLPClassifier
+0.5281620382131271;hidden_layer_sizes =(60,)activation = relusolver = adam alpha =1e-05learning_rate=adaptive;0.4718379617868729;MLPClassifier
+0.6337452336521191;hidden_layer_sizes =(60,)activation = relusolver = lbfgs alpha =1e-05learning_rate=adaptive;0.3662547663478809;MLPClassifier
+0.6330200945852249;hidden_layer_sizes =(60,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptivemomentum = 0.5;0.3669799054147751;MLPClassifier
+0.6192660943759695;hidden_layer_sizes =(90,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptivemomentum = 0.5;0.38073390562403053;MLPClassifier
+0.6261563918139043;hidden_layer_sizes =(100,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptivemomentum = 0.5;0.37384360818609574;MLPClassifier
+0.6386705552977001;hidden_layer_sizes =(100,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptivemomentum = 0.5;0.3613294447022999;MLPClassifier
+0.6300538196467231;hidden_layer_sizes =(100,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptivemomentum = 0.5;0.36994618035327687;MLPClassifier
+0.6465695692072545;hidden_layer_sizes =(100,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptivemomentum = 0.5;0.3534304307927455;MLPClassifier
+0.6048812262292758;hidden_layer_sizes =(100,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptivemomentum = 0.5;0.39511877377072424;MLPClassifier
+0.6173709358839595;hidden_layer_sizes =(100,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptivemomentum = 0.5;0.3826290641160405;MLPClassifier
+0.6007054099361601;hidden_layer_sizes =(100,)activation = relusolver = sgd alpha =1e-05learning_rate=adaptivemomentum = 0.5;0.39929459006383994;MLPClassifier
