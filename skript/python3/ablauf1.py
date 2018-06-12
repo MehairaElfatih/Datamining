@@ -6,23 +6,20 @@ from sklearn.neural_network import MLPClassifier
 import numpy as np
 import Kreuzvalidierung as kv
 import Utility as uty
-import Explorative as ex
-from os import path
-import pandas as pd
 
 #___________________________________________________________________________________________________________________
 kflod = 5
 
-for modell in range(1,5):
+for modell in range(5,6):
     ausgewahltet_Modell = modell
 
     if (ausgewahltet_Modell == 1):
         # _SVC___________________________________________________________________________
         C = 1.0  # der Parameter der  Sanktion vom dem Fehler (1.0 ist der max  value)
-        degree = [1, 2, 3, 4, 5, 6, 9, 10]  # nur bei Polynomial kernel anwendbar
+        degree = [3]  # nur bei Polynomial kernel anwendbar
         gamma = 'auto'  # float, optional (default=’auto’)
         coef0 = 0.0
-        kernel = ['linear', 'poly', 'rbf', 'sigmoid']  # ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid  ['linear', 'poly', 'rbf', 'sigmoid']
+        kernel = [ 'poly']  # ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid  ['linear', 'poly', 'rbf', 'sigmoid']
 
         ModellName = 'SVC'
         for kern in kernel:
@@ -93,16 +90,16 @@ for modell in range(1,5):
 
     if (ausgewahltet_Modell == 4):
         # _______________MlPClassifier____________________________________________________________________
-        hidden_layer_sizes = [(10,)]  # hidden_layer_sizes : tuple, length = n_layers - 2, default (100,)
+        #hidden_layer_sizes = [(70,),(75,)(80,),(85,),(90,),(100,)]  # hidden_layer_sizes : tuple, length = n_layers - 2, default (100,)
         activation = 'relu'  # activation : {‘identity’, ‘logistic’, ‘tanh’, ‘relu’}, default ‘relu’
         solver = ['sgd', 'lbfgs', 'adam']  # solver : {‘lbfgs’, ‘sgd’, ‘adam’}, default ‘adam’
-        alpha = [0.00001, 0.001, 0.000001, 0.0000001]
+        alpha = [0.00001]
         learnin_rate = ['adaptive', 'constant',
                         'invscaling']  # learning_rate : {‘constant’, ‘invscaling’, ‘adaptive’}, default ‘constant’
-        momentum = [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]  # momentum : float, default 0.9 [0,1]
+        momentum = [0.9]  # momentum : float, default 0.9 [0,1]
         ModellName = 'MLPClassifier'
 
-        for i in range(50, 100):
+        for i in range(96,100):
             for sl in solver:
                 for al in alpha:
                     for mom in momentum:
