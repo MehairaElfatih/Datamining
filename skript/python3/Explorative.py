@@ -76,13 +76,19 @@ class Explorative:
         #plt.savefig(path_exploration + 'Korrelation_ matrix' + '.pdf')
         #plt.show() 
     # Bivariate Abhängigkeiten: Korrelationsmatrix der Merkmale, stärkste Zusammenhänge, Streudiagramm Merkmal1 vs. Merkmal2
-    def abhangigkeit(self,df):
+    def wichtiger_merkmale(self,df):
         # Boxplot wichtiger Merkmale über der Klasse
-        X = df.loc[:, df.columns != 'P-Altersklasse'].values
+        # http://scikit-learn.org/stable/modules/feature_selection.html
+        #X = df.loc[:, df.columns != 'P-Altersklasse'].values
+        X = df.values
         y = df['P-Altersklasse'].values
         print(X.shape)
-        X_new = SelectKBest(f_classif, k=2).fit_transform(X,y)
-        print(X_new)
+        X_new = SelectKBest(f_classif, k=94).fit_transform(X,y)
+        print(type(X_new))
+        #bplot = sns.boxplot(x= X_new[0], y=X_new[0], data=X_new, width=0.5, palette="colorblind")
+        plt.plot(X_new[0], X_new[1], 'bo')
+        #plt.show()
+        plt.savefig(path_exploration + 'wichtige_merkmale' + '.pdf')
         
 
 
@@ -92,4 +98,4 @@ test = Explorative()
 # test.klassenverteilungTrain()
 # test.klassenverteilungTest()
 readTest = test.ReadMeasure
-test.abhangigkeit(readTest)
+test.wichtiger_merkmale(readTest)
