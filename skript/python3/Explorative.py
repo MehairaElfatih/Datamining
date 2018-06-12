@@ -138,6 +138,7 @@ class Explorative:
         sns_plot.set_title('accuracy = ' + str(accuracy))
         sns_plot.figure.savefig(path_final + name)
 
+
 #ReadTrain = pd.read_csv(path_erweiter + 'Measure_Umgewandelt.csv', sep=';', decimal=',')
 #ReadTest = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';', decimal=',')
 #test = Explorative()

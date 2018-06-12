@@ -2,8 +2,11 @@ import pandas as pd
 from os import path
 import time
 import numpy as np
+import Utility as utis
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import confusion_matrix
+
+path_orignalFiles = path.curdir + '/../../Daten/original/'
 
 path_erweiter = path.curdir + '/../../Daten/erweitert/'
 path_ergebnis = path.curdir + '/../../Daten/ergebnis/Performance.csv'
@@ -11,6 +14,7 @@ path_ergebnis = path.curdir + '/../../Daten/ergebnis/Performance.csv'
 ReadTrainMeasure = pd.read_csv(path_erweiter + 'TrainMeasure.csv', sep=';')
 ReadTestMeasure = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';')
 
+ReadTestMeasure = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';')
 
 # ReadTestMeasure.iloc[:0, 0:94].astype(float,errors='raise')
 
@@ -84,3 +88,11 @@ class validation:
         accuracy = np.sum(np.diagonal(cm)) / np.sum(cm)
         print(accuracy)
         return cm, accuracy
+
+    def Predictve_Modell(self):
+        ReadToPredict = pd.read_csv(path_orignalFiles + 'to_predict.csv', sep=';', decimal=',').values
+        uti = utis.Utility()
+        to_predict = uti.To_Prdicted()
+        clf = self.learning_model.predict(to_predict)
+        print(clf)
+        uti.write_predicted(clf)

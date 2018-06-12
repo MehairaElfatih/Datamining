@@ -156,16 +156,17 @@ modell = RandomForestClassifier(n_estimators=n_estimators, criterion=criterion, 
 Parameter = 'n_estimators = ' + str(n_estimators) + ' criterion =' + str(criterion) + ',max_depth =' + str(max_depth) + 'max_features =' + 'auo'
 cv = kv.validation(modell, kflod)
 dauert, scoresMean = cv.kreuzvalidierng_model()
-ModellParamdict = {'name': ModellName, 'Acuracy': np.mean(scoresMean),'TestFehle': 1 - np.mean(scoresMean), 'Parameter': Parameter, 'seed':seed}
+ModellParamdict = {'name': ModellName, 'Accuracy': np.mean(scoresMean),'TestFehle': 1 - np.mean(scoresMean), 'Parameter': Parameter, 'seed':seed, 'dauer': dauert}
 
 dauert90,scores90 =cv.generated_model_90()
-ModellParamdict = {'name': ModellName, 'Acuracy': scores90,'TestFehle': 1 - scores90, 'Parameter': Parameter, 'seed': seed}
+ModellParamdict = {'name': ModellName, 'Accuracy': scores90,'TestFehle': 1 - scores90, 'Parameter': Parameter, 'seed': seed}
 #perf = uty.Utility()
 #perf.writePerformanceModell(ModellParamdict,'performance_90.csv')
 
 cm90,accuracy90 = cv.generated_model_90()
 cmtest,accuracytes = cv.Apply_model_Test()
 cm100,accuracy100 = cv.Apply_model_100()
+cv.Predictve_Modell()
 
 expo = exp.Explorative()
 expo.konfusion_Marix(cm90,accuracy90 ,'confusionMatrix90%')

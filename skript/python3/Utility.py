@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 #read files
 
 path_orignalFiles = path.curdir + '/../../Daten/original/'
-
+path_final = path.curdir + '/../../Abbildungen/final/'
 path_erweiter = path.curdir + '/../../Daten/erweitert/'
 path_ergebnis = path.curdir + '/../../Daten/ergebnis/'
 
@@ -24,9 +24,6 @@ class Utility :
         dfHeader = self.ReadMeasure.columns[self.ReadMeasure.isnull().any()].tolist()
         for x in dfHeader:
             self.ReadMeasure[x].fillna(self.ReadMeasure[x].mean(), inplace=True)
-
-        for x in dfHeader:
-            self.ReadToPedict[x].fillna(self.ReadToPedict[x].mean(), inplace=True)
 
         """
              Die Dateien müssen so angepasst werden, dass die Wert  von den Features  nicht mehr als String betrachtet würden.
@@ -72,8 +69,30 @@ class Utility :
 
 
 
-    def Datatype_wiedererstellung(self,df):
-        pass
+    def To_Prdicted(self):
+        dfHeader = self.ReadToPedict.columns[self.ReadToPedict.isnull().any()].tolist()
+        for x in dfHeader:
+            self.ReadToPedict[x].fillna(self.ReadToPedict[x].mean(), inplace=True)
+       # P_Geschlecht: m = 1   und w = 0
+
+        self.ReadToPedict['P-Geschlecht'] = self.ReadToPedict['P-Geschlecht'].str.replace('m', '1')
+        self.ReadToPedict['P-Geschlecht'] = self.ReadToPedict['P-Geschlecht'].str.replace('w', '0')
+        #self.ReadToPedict['P-Geschlecht'] = self.ReadMeasure['P-Geschlecht'].astype(int)
+        #self.ReadToPedict['L-StanceStride'].astype(float)
+        #self.write_erweiterung_datei(self.ReadToPedict, 'to_predict.csv')
+        return self.ReadToPedict
+
+    def write_predicted(self,predicted):
+        dfpredicted = pd.DataFrame(predicted,columns=['Predicted_Altersklasse'])
+        # P_Altersklasse : '20-29 = 0', '30-39 = 1', '40-49 = 2', '50-59 =3','60-69=4'
+        dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(0,'20-29')
+        dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(1,'30-39')
+        dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(2,'40-49')
+        dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(3,'50-59')
+        dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(4,'60-69')
+
+        #print(dfpredicted)
+        dfpredicted.to_csv(path_final + 'predicted.csv', sep=';')
 
 
     def writePerformanceModell(self, ModellParmeter, filename):
