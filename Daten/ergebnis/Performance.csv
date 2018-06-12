@@ -5476,3 +5476,30 @@ Acuracy;Parameter;TestFehle;name
 0.7292550829902156;n_estimators = 27 criterion =gini,max_depth =29max_features =auo;0.2707449170097844;Random Forest
 0.7195457933365464;n_estimators = 28 criterion =gini,max_depth =29max_features =auo;0.28045420666345355;Random Forest
 0.7360513825406558;n_estimators = 29 criterion =gini,max_depth =29max_features =auo;0.26394861745934417;Random Forest
+0.6639355071508748;C =1.0  kenel =poly  gamma =auto  coef0 =0.0   random_state :1  max_iter :-1 degree = 3;0.3360644928491252;SVC
+0.6639355071508748;C =1.0  kenel =poly  gamma =auto  coef0 =0.0   random_state :2  max_iter :-1 degree = 3;0.3360644928491252;SVC
+0.6639355071508748;C =1.0  kenel =poly  gamma =auto  coef0 =0.0   random_state :3  max_iter :-1 degree = 3;0.3360644928491252;SVC
+0.6639355071508748;C =1.0  kenel =poly  gamma =auto  coef0 =0.0   random_state :4  max_iter :-1 degree = 3;0.3360644928491252;SVC
+0.6639355071508748;C =1.0  kenel =poly  gamma =auto  coef0 =0.0   random_state :5  max_iter :-1 degree = 3;0.3360644928491252;SVC
+0.6639355071508748;C =1.0  kenel =poly  gamma =auto  coef0 =0.0   random_state :6  max_iter :-1 degree = 3;0.3360644928491252;SVC
+0.6639355071508748;C =1.0  kenel =poly  gamma =auto  coef0 =0.0   random_state :7  max_iter :-1 degree = 3;0.3360644928491252;SVC
+0.6639355071508748;C =1.0  kenel =poly  gamma =auto  coef0 =0.0   random_state :8  max_iter :-1 degree = 3;0.3360644928491252;SVC
+0.6621238174459315; n_neighbors =2,weights =uniform,n_jobs =-1,algorithm =auto;0.3378761825540685;KNeighborsClassification
+0.7390347311224822;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.2609652688775178;Random Forest
+0.7409492473483857;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.25905075265161426;Random Forest
+0.7369608219839765;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.2630391780160235;Random Forest
+0.7437527523158716;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.25624724768412843;Random Forest
+0.7283266519041728;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.2716733480958272;Random Forest
+0.7389457470923342;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.2610542529076658;Random Forest
+0.7224540454772248;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.2775459545227752;Random Forest
+0.7292548548464423;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.27074514515355774;Random Forest
+0.7283214576540751;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.2716785423459249;Random Forest
+0.7388792086955249;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.2611207913044751;Random Forest
+0.7516153825992303;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.24838461740076967;Random Forest
+0.729132124107666;n_estimators = 29 criterion =gini,max_depth =21max_features =auo;0.27086787589233396;Random Forest
+0.7379506449677532;n_estimators = 29 criterion =gini,max_depth =21max_features =auoseed = None;0.2620493550322468;Random Forest
+0.7379506449677532;n_estimators = 29 criterion =gini,max_depth =21max_features =auoseed = None;0.2620493550322468;Random Forest
+0.7379506449677532;n_estimators = 29 criterion =gini,max_depth =21max_features =auoseed = None;0.2620493550322468;Random Forest
+0.7379506449677532;n_estimators = 29 criterion =gini,max_depth =21max_features =auoseed = None;0.2620493550322468;Random Forest
+0.7379506449677532;n_estimators = 29 criterion =gini,max_depth =21max_features =auoseed = None;0.2620493550322468;Random Forest
+0.7379506449677532;n_estimators = 29 criterion =gini,max_depth =21max_features =auoseed = None;0.2620493550322468;Random Forest

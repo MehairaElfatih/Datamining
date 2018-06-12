@@ -76,14 +76,7 @@ class Utility :
         pass
 
 
-    def writePerformanceModell(self, ModellParmeter):
+    def writePerformanceModell(self, ModellParmeter, filename):
         Perform = pd.DataFrame(ModellParmeter, index=[0])
-        Perform.to_csv(path_ergebnis + 'Performance.csv', sep=';', mode='a', header=False, index=False)
+        Perform.to_csv(path_ergebnis + filename, sep=';', mode='a', header=False, index=False)
         print(Perform)
-
-
-perf = Utility()
-readMeasure, Train ,test =perf.create_test_train_data()
-perf.write_erweiterung_datei(readMeasure,'Measure_Umgewandelt.csv')
-perf.write_erweiterung_datei(Train,'TrainMeasure.csv')
-perf.write_erweiterung_datei(test,'TestMeasure.csv')

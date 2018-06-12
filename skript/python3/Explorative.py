@@ -6,10 +6,12 @@ import seaborn as sns
 from pandas.plotting import scatter_matrix
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2,f_classif
+from matplotlib import cm as cm
 
-
+path_final = path.curdir + '/../../Abbildungen/final/'
 path_exploration = path.curdir + '/../../Abbildungen/exploration/'
 path_erweiter = path.curdir + '/../../Daten/erweitert/'
+path_ergebnis = path.curdir + '/../../Daten/ergebnis/'
 
 
 class Explorative:
@@ -17,6 +19,7 @@ class Explorative:
         self.ReadMeasure = pd.read_csv(path_erweiter + 'Measure_Umgewandelt.csv', sep=';', decimal=',')
         self.ReadTrain = pd.read_csv(path_erweiter + 'TrainMeasure.csv', sep=';', decimal=',')
         self.ReadTest = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';', decimal=',')
+        self.Readperformance = pd.read_csv(path_ergebnis + 'Performance.csv', sep=';', decimal='.')
 
     def transformation(self, data):
         data['P-Geschlecht'] = data['P-Geschlecht'].replace(1, 'm')
@@ -27,7 +30,6 @@ class Explorative:
         data['P-Altersklasse'] = data['P-Altersklasse'].replace(2, '40-49')
         data['P-Altersklasse'] = data['P-Altersklasse'].replace(3, '50-59')
         data['P-Altersklasse'] = data['P-Altersklasse'].replace(4, '60-69')
-
         return data
 
     # Vergleich Klassenverteilung in Trainings- und +Testmenge (Klassenhistogramme)
@@ -51,22 +53,33 @@ class Explorative:
         plt.savefig(path_exploration + titletest + '.pdf')
 
     def boxsplot(self, df):
-        # df = self.transformation(df)
-        # bplot = sns.boxplot(x =['P-Geschlecht'],y = ['P-Altersklasse'],data = df.values,width = 0.5, palette = "colorblind" )
-        df.boxplot(by=['P-Altersklasse'], column=['P-Geschlecht'], rot=0)
+        print("romeo")
+        plt.matshow(df.corr)
+        plt.show()
 
     # Von welchen Merkmalen hängt die Klasse stark ab (Korrelation)?
     def korrelation(self, df):
+        """
+        fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    cmap = cm.get_cmap('jet', 30)
+    cax = ax1.imshow(test.corr(), interpolation="nearest", cmap=cmap)
+    ax1.grid(True)
+        :param df:
+        :return:
+        """
         df=df.drop(['P-KennungAnonym'], axis=1)
         print("korrelation")
         correlation = df.corr()
         figure = plt.figure()
         ax = figure.add_subplot(111) #gr0ße des Plotsbildschirm
-        cax = ax.matshow(correlation, vmin=-1, vmax=1)
+        cmap = cm.get_cmap('jet',30)
+        cax = ax.imshow(correlation, interpolation="nearest", cmap=cmap)
         figure.colorbar(cax)
-        ticks = np.arange(0, 9, 1)
+        ticks = [1,9,0]
         ax.set_xticks(ticks)
         ax.set_yticks(ticks)
+        #print(df.columns.values)
         ax.set_xticklabels(df.columns.values)
         ax.set_yticklabels(df.columns.values)
         #plt.savefig(path_exploration + 'Korrelation_ matshow' + '.pdf')
@@ -79,23 +92,57 @@ class Explorative:
     def wichtiger_merkmale(self,df):
         # Boxplot wichtiger Merkmale über der Klasse
         # http://scikit-learn.org/stable/modules/feature_selection.html
-        #X = df.loc[:, df.columns != 'P-Altersklasse'].values
-        X = df.values
+        X = df.loc[:, df.columns != 'P-Altersklasse'].values
         y = df['P-Altersklasse'].values
         print(X.shape)
         X_new = SelectKBest(f_classif, k=94).fit_transform(X,y)
         print(type(X_new))
-        #bplot = sns.boxplot(x= X_new[0], y=X_new[0], data=X_new, width=0.5, palette="colorblind")
         plt.plot(X_new[0], X_new[1], 'bo')
-        #plt.show()
         plt.savefig(path_exploration + 'wichtige_merkmale' + '.pdf')
-        
 
+    def Plot_perfromance (self,df):
+        perform_svc = df.loc[df['name'] =='SVC',]
+        perform_rf = df.loc[df['name'] == 'Random Forest',] #MLPClassifier ,DecisionTreeClassifier  ,KNeighborsClassification
+        perform_knn = df.loc[df['name'] == 'KNeighborsClassification',]
+        perform_mlpc = df.loc[df['name'] == 'MLPClassifier',]
+        perform_dtc = df.loc[df['name'] == 'DecisionTreeClassifier']
+        #print(perform_dtc)
+
+        fig = plt.figure()
+        plt.grid(color='gray', linestyle='-', linewidth=0.1)
+        plt.xlabel('accuracy')
+        plt.ylabel('Testfehler')
+        
+        plt.title('performance of SVC')
+        plt.scatter(perform_svc['Acuracy'], perform_svc['TestFehle'], marker='X')        
+        plt.savefig(path_exploration + 'SVC' + '.pdf')
+        
+        plt.title('performance of Random Forest')
+        plt.scatter(perform_rf['Acuracy'], perform_rf['TestFehle'], marker='X')        
+        plt.savefig(path_exploration + 'Random Forest' + '.pdf')
+        
+        plt.title('performance of KNeighborsClassification')
+        plt.scatter(perform_knn['Acuracy'], perform_knn['TestFehle'], marker='X')        
+        plt.savefig(path_exploration + 'KNeighborsClassification' + '.pdf')
+        
+        plt.title('performance of MLPClassifier')
+        plt.scatter(perform_mlpc['Acuracy'], perform_mlpc['TestFehle'], marker='X')        
+        plt.savefig(path_exploration + 'MLPClassifier' + '.pdf')
+        
+        plt.title('performance of DecisionTreeClassifier')
+        plt.scatter(perform_dtc['Acuracy'], perform_dtc['TestFehle'], marker='X')        
+        plt.savefig(path_exploration + 'DecisionTreeClassifier' + '.pdf')
+
+    def konfusion_Marix(self,confisionMatrice, accuracy, name):
+        sns_plot = sns.heatmap(confisionMatrice, annot=True, fmt="d", cbar=False)
+        sns_plot.set_title('accuracy = ' + str(accuracy))
+        sns_plot.figure.savefig(path_final + name)
 
 #ReadTrain = pd.read_csv(path_erweiter + 'Measure_Umgewandelt.csv', sep=';', decimal=',')
 #ReadTest = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';', decimal=',')
-test = Explorative()
+#test = Explorative()
 # test.klassenverteilungTrain()
 # test.klassenverteilungTest()
-readTest = test.ReadMeasure
-test.wichtiger_merkmale(readTest)
+#readTest = test.ReadMeasure
+#test.Plot_perfromance(readTest)
+#test.korrelation(readTest)
