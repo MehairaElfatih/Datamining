@@ -1,6 +1,7 @@
 from builtins import print
 from os import path
 import pandas as pd
+import Explorative as exp
 import numpy as np
 from sklearn.model_selection import train_test_split
 
@@ -33,7 +34,7 @@ class Utility :
 
              P_Altersklasse : '20-29 = 0', '30-39 = 1', '40-49 = 2', '50-59 =3','60-69=4' 
 
-            """
+        """
 
         self.ReadMeasure['P-Geschlecht'] = self.ReadMeasure['P-Geschlecht'].str.replace('m', '1')
         self.ReadMeasure['P-Geschlecht'] = self.ReadMeasure['P-Geschlecht'].str.replace('w', '0')
@@ -82,7 +83,7 @@ class Utility :
         #self.write_erweiterung_datei(self.ReadToPedict, 'to_predict.csv')
         return self.ReadToPedict
 
-    def write_predicted(self,predicted):
+    def write_predicted(self,predicted,filesname):
         dfpredicted = pd.DataFrame(predicted,columns=['Predicted_Altersklasse'])
         # P_Altersklasse : '20-29 = 0', '30-39 = 1', '40-49 = 2', '50-59 =3','60-69=4'
         dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(0,'20-29')
@@ -92,7 +93,7 @@ class Utility :
         dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(4,'60-69')
 
         #print(dfpredicted)
-        dfpredicted.to_csv(path_final + 'predicted.csv', sep=';')
+        dfpredicted.to_csv(path_final + filesname, sep=';')
 
 
     def writePerformanceModell(self, ModellParmeter, filename):

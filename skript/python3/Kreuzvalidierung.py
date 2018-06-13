@@ -3,18 +3,24 @@ from os import path
 import time
 import numpy as np
 import Utility as utis
+import Explorative as exp
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import confusion_matrix
 
 path_orignalFiles = path.curdir + '/../../Daten/original/'
 
 path_erweiter = path.curdir + '/../../Daten/erweitert/'
-path_ergebnis = path.curdir + '/../../Daten/ergebnis/Performance.csv'
+#path_ergebnis = path.curdir + '/../../Daten/ergebnis/Performance.csv'
 
 ReadTrainMeasure = pd.read_csv(path_erweiter + 'TrainMeasure.csv', sep=';')
 ReadTestMeasure = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';')
 
-ReadTestMeasure = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';')
+
+test = exp.Explorative()
+#ReadTrainMeasure= test.data_normalisation(ReadTrainMeasure)
+#ReadTestMeasure = test.data_normalisation(ReadTestMeasure)
+
+#print(ReadTrainMeasure)
 
 # ReadTestMeasure.iloc[:0, 0:94].astype(float,errors='raise')
 
@@ -33,6 +39,7 @@ class validation:
     def kreuzvalidierng_model(self):
         # Anfang des Fitting
         # print(self.X_train.dtypes)
+        test = exp.Explorative()
         startTime = time.time()
         clf = self.learning_model.fit(self.X_train, self.y_train)
         endTime = time.time()
@@ -46,21 +53,27 @@ class validation:
         return dauert, scores
 
     def generated_model_90(self):
-        ReadTrainMeasure = pd.read_csv(path_erweiter + 'TrainMeasure.csv', sep=';', decimal=',')
+        #ReadTrainMeasure = pd.read_csv(path_erweiter + 'TrainMeasure.csv', sep=';', decimal=',')
         X_train = ReadTrainMeasure.drop(['P-Altersklasse'], axis=1)
         y_train = ReadTrainMeasure['P-Altersklasse']
         startTime = time.time()
         clf = self.learning_model.fit(self.X_train, self.y_train)
         endTime = time.time()
         dauert = endTime - startTime
-        cm = confusion_matrix(y_train, clf.predict(X_train))
+
+        ReadTestMeasure = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';', decimal=',')
+        X_test = ReadTestMeasure.drop(['P-Altersklasse'], axis=1)
+        y_test = ReadTestMeasure['P-Altersklasse']
+        #clf = self.learning_model.predict(X_test)
+
+        cm = confusion_matrix(y_test, clf.predict(X_test))
         print(" confusion Matrix 90")
         print(cm)
         # accuracy
         #sum(diag(d)) / sum(d)  # overall accuracy
         #1 - sum(diag(d)) / sum(d)  # incorrect classification
         accuracy = np.sum(np.diagonal(cm))/np.sum(cm)
-        return cm, accuracy
+        return cm, accuracy,dauert
 
     def Apply_model_Test(self):
         ReadTestMeasure = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';', decimal=',')
@@ -95,4 +108,4 @@ class validation:
         to_predict = uti.To_Prdicted()
         clf = self.learning_model.predict(to_predict)
         print(clf)
-        uti.write_predicted(clf)
+        uti.write_predicted(clf,'Predicted2.csv')

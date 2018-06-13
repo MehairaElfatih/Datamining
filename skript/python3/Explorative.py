@@ -138,12 +138,8 @@ class Explorative:
         sns_plot.set_title('accuracy = ' + str(accuracy))
         sns_plot.figure.savefig(path_final + name)
 
+    def data_normalisation (self, df):
+        df_norm = (df.iloc[:,:94] - df.iloc[:,:94].mean())/(df.iloc[:,:94].max() - df.iloc[:,:94].min())
+        df.iloc[:,:94] =df_norm
+        return df
 
-#ReadTrain = pd.read_csv(path_erweiter + 'Measure_Umgewandelt.csv', sep=';', decimal=',')
-#ReadTest = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';', decimal=',')
-#test = Explorative()
-# test.klassenverteilungTrain()
-# test.klassenverteilungTest()
-#readTest = test.ReadMeasure
-#test.Plot_perfromance(readTest)
-#test.korrelation(readTest)
