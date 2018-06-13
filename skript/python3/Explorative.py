@@ -69,6 +69,7 @@ class Explorative:
         :param df:
         :return:
         """
+        """
         df=df.drop(['P-KennungAnonym'], axis=1)
         print("korrelation")
         correlation = df.corr()
@@ -86,9 +87,43 @@ class Explorative:
         #plt.savefig(path_exploration + 'Korrelation_ matshow' + '.pdf')
         plt.show()
         
-        #scatter_matrix(df)
-        #plt.savefig(path_exploration + 'Korrelation_ matrix' + '.pdf')
-        #plt.show() 
+        """
+
+        # calculate the correlation matrix
+        df = df.drop(['P-KennungAnonym'], axis=1)
+        print("korrelation")
+        correlation = df.corr()
+
+        #########plot correlation
+        def magnify():
+            return [dict(selector="th",
+                         props=[("font-size", "7pt")]),
+                    dict(selector="td",
+                         props=[('padding', "0em 0em")]),
+                    dict(selector="th:hover",
+                         props=[("font-size", "8pt")]),
+                    dict(selector="tr:hover td:hover",
+                         props=[('max-width', '200px'),
+                                ('font-size', '8pt')])
+                    ]
+
+            correlation.style.background_gradient(cmap, axis=1) \
+            .set_properties(**{'max-width': '30px', 'font-size': '8pt'}) \
+            .set_caption("Hover to magify") \
+            .set_precision(2) \
+            .set_table_styles(magnify())
+
+        # plot the heatmap
+        plt.figure(num=None, figsize=(30, 30), dpi=80, facecolor='w', edgecolor='k')
+        sns.heatmap(correlation,
+                    xticklabels=correlation.columns,
+                    yticklabels=correlation.columns)
+        plt.savefig(path_exploration + 'Korrelation_ matshow' + '.pdf')
+        plt.show()
+
+
+
+
     # Bivariate Abhängigkeiten: Korrelationsmatrix der Merkmale, stärkste Zusammenhänge, Streudiagramm Merkmal1 vs. Merkmal2
     def wichtiger_merkmale(self,df):
         # Boxplot wichtiger Merkmale über der Klasse
