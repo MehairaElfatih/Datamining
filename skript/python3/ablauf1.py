@@ -144,21 +144,32 @@ seed = 10
 ## 0.7623419945198805;n_estimators = 21 criterion =entropy ,max_depth =40 max_features =auo;0.2376580054801195;0.21733570098876953;Random Forest;10
 
 #%
-ModellName = 'Random Forest'
-n_estimators = 21
-criterion = 'entropy'  # #criterion : string, optional (default=”gini”  impurity and “entropy”)
-max_depth = 40
-modell = RandomForestClassifier(n_estimators=n_estimators, criterion=criterion, max_depth=max_depth,max_features='auto')
-Parameter = 'n_estimators = ' + str(n_estimators) + ' criterion =' + str(criterion) + ',max_depth =' + str(max_depth) + 'max_features =' + 'auo'
-cv = kv.validation(modell, kflod)
-#########################################################################
-
-cm90, accuracy90, dauert=cv.generated_model_90()
-ModellParamdict = {'name': ModellName, 'Accuracy': accuracy90,'TestFehle': 1 - accuracy90, 'Parameter': Parameter, 'seed': seed, 'Dauert':dauert}
+# ModellName = 'Random Forest'
+# n_estimators = 21
+# criterion = 'entropy'  # #criterion : string, optional (default=”gini”  impurity and “entropy”)
+# max_depth = 40
+# modell = RandomForestClassifier(n_estimators=n_estimators, criterion=criterion, max_depth=max_depth,max_features='auto')
+# Parameter = 'n_estimators = ' + str(n_estimators) + ' criterion =' + str(criterion) + ',max_depth =' + str(max_depth) + 'max_features =' + 'auo'
+# cv = kv.validation(modell, kflod)
+# #########################################################################
+#
+# cm90, accuracy90, dauert=cv.generated_model_90()
+# ModellParamdict = {'name': ModellName, 'Accuracy': accuracy90,'TestFehle': 1 - accuracy90, 'Parameter': Parameter, 'seed': seed, 'Dauert':dauert}
 perf = uty.Utility()
-perf.writePerformanceModell(ModellParamdict,'performance_90.csv')
-expo.konfusion_Marix(cm90,accuracy90 ,'confusionMatrix90%_Norm')
+# perf.writePerformanceModell(ModellParamdict,'performance_90.csv')
+# expo.konfusion_Marix(cm90,accuracy90 ,'confusionMatrix90%_Norm')
+#
+# ############################################################################
+# cv.generate_predictive()
+# cv.Predicted_data()
 
-############################################################################
-cv.generate_predictive()
-cv.Predicted_data()
+#perform = expo.Readperformance
+#perform90 = expo.Readperformance90
+
+test = expo.ReadTrain
+measure,train,test = perf.create_test_train_data()
+#expo.Plot_perfromance90(perform90)
+#expo.Plot_perfromance(perform)
+expo.korrelation(measure)
+
+

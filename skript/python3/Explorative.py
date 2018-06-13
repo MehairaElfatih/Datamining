@@ -20,6 +20,7 @@ class Explorative:
         self.ReadTrain = pd.read_csv(path_erweiter + 'TrainMeasure.csv', sep=';', decimal=',')
         self.ReadTest = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';', decimal=',')
         self.Readperformance = pd.read_csv(path_ergebnis + 'Performance.csv', sep=';', decimal='.')
+        self.Readperformance90 = pd.read_csv(path_ergebnis + 'performance_90.csv', sep=';', decimal='.')
 
     def transformation(self, data):
         data['P-Geschlecht'] = data['P-Geschlecht'].replace(1, 'm')
@@ -106,32 +107,46 @@ class Explorative:
         perform_knn = df.loc[df['name'] == 'KNeighborsClassification',]
         perform_mlpc = df.loc[df['name'] == 'MLPClassifier',]
         perform_dtc = df.loc[df['name'] == 'DecisionTreeClassifier']
-        #print(perform_dtc)
+
+        print(perform_dtc)
 
         fig = plt.figure()
         plt.grid(color='gray', linestyle='-', linewidth=0.1)
-        plt.xlabel('accuracy')
+        plt.xlabel('Accuracy')
         plt.ylabel('Testfehler')
         
         plt.title('performance of SVC')
-        plt.scatter(perform_svc['Acuracy'], perform_svc['TestFehle'], marker='X')        
-        plt.savefig(path_exploration + 'SVC' + '.pdf')
+        plt.scatter(perform_svc['Accuracy'], perform_svc['TestFehle'], marker='X')
+        #plt.savefig(path_exploration + 'SVC' + '.pdf')
         
         plt.title('performance of Random Forest')
-        plt.scatter(perform_rf['Acuracy'], perform_rf['TestFehle'], marker='X')        
-        plt.savefig(path_exploration + 'Random Forest' + '.pdf')
+        plt.scatter(perform_rf['Accuracy'], perform_rf['TestFehle'], marker='X')
+        #plt.savefig(path_exploration + 'Random Forest' + '.pdf')
         
         plt.title('performance of KNeighborsClassification')
-        plt.scatter(perform_knn['Acuracy'], perform_knn['TestFehle'], marker='X')        
-        plt.savefig(path_exploration + 'KNeighborsClassification' + '.pdf')
+        plt.scatter(perform_knn['Accuracy'], perform_knn['TestFehle'], marker='X')
+        #plt.savefig(path_exploration + 'KNeighborsClassification' + '.pdf')
         
         plt.title('performance of MLPClassifier')
-        plt.scatter(perform_mlpc['Acuracy'], perform_mlpc['TestFehle'], marker='X')        
-        plt.savefig(path_exploration + 'MLPClassifier' + '.pdf')
+        plt.scatter(perform_mlpc['Accuracy'], perform_mlpc['TestFehle'], marker='X')
+        #plt.savefig(path_exploration + 'MLPClassifier' + '.pdf')
         
         plt.title('performance of DecisionTreeClassifier')
-        plt.scatter(perform_dtc['Acuracy'], perform_dtc['TestFehle'], marker='X')        
+        plt.scatter(perform_dtc['Accuracy'], perform_dtc['TestFehle'], marker='X')
         plt.savefig(path_exploration + 'DecisionTreeClassifier' + '.pdf')
+
+    def Plot_perfromance90(self, df):
+        perform_rf = df.loc[df['name'] == 'Random Forest',]  # MLPClassifier ,DecisionTreeClassifier  ,KNeighborsClassification
+
+        #fig = plt.figure()
+        plt.scatter(perform_rf['Accuracy'], perform_rf['TestFehle'], marker='X')
+        plt.xlabel('Accuracy')
+        plt.ylabel('Testfehler')
+
+        plt.title('performance of Random Forest')
+        plt.scatter(perform_rf['Accuracy'], perform_rf['TestFehle'], marker='X')
+        plt.savefig(path_exploration + 'Random Forest90' + '.pdf')
+
 
     def konfusion_Marix(self,confisionMatrice, accuracy, name):
         sns_plot = sns.heatmap(confisionMatrice, annot=True, fmt="d", cbar=False)

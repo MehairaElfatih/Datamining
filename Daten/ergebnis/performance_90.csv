@@ -1,3 +1,4 @@
+Accuracy;Parameter;TestFehle;name;seed
 0.59375;0.20592164993286133;n_estimators = 21 criterion =entropy,max_depth =40max_features =auo;0.40625;Random Forest;10
 0.59375;0.21346139907836914;n_estimators = 21 criterion =entropy,max_depth =40max_features =auo;0.40625;Random Forest;10
 0.62890625;0.20721817016601562;n_estimators = 21 criterion =entropy,max_depth =40max_features =auo;0.37109375;Random Forest;10
