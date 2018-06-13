@@ -6,8 +6,10 @@ import Utility as utis
 import Explorative as exp
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import confusion_matrix
+from sklearn.externals import joblib
 
 path_orignalFiles = path.curdir + '/../../Daten/original/'
+path_final = path.curdir + '/../../Abbildungen/final/'
 
 path_erweiter = path.curdir + '/../../Daten/erweitert/'
 #path_ergebnis = path.curdir + '/../../Daten/ergebnis/Performance.csv'
@@ -60,7 +62,7 @@ class validation:
         clf = self.learning_model.fit(self.X_train, self.y_train)
         endTime = time.time()
         dauert = endTime - startTime
-
+        #apply Model on Test
         ReadTestMeasure = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';', decimal=',')
         X_test = ReadTestMeasure.drop(['P-Altersklasse'], axis=1)
         y_test = ReadTestMeasure['P-Altersklasse']
@@ -75,37 +77,26 @@ class validation:
         accuracy = np.sum(np.diagonal(cm))/np.sum(cm)
         return cm, accuracy,dauert
 
-    def Apply_model_Test(self):
-        ReadTestMeasure = pd.read_csv(path_erweiter + 'TestMeasure.csv', sep=';', decimal=',')
-        X_test = ReadTestMeasure.drop(['P-Altersklasse'], axis=1)
-        y_test = ReadTestMeasure['P-Altersklasse']
-        clf = self.learning_model.predict(X_test)
-        cm = confusion_matrix(y_test, clf)
-        print(" confusion Matrix Test")
-        print(cm)
-        # accuracy
-        accuracy = np.sum(np.diagonal(cm)) / np.sum(cm)
-        print(accuracy)
-        return cm ,accuracy
-
-    def Apply_model_100(self):
+    def generate_predictive(self):
+        """
+         Generated the with all Data Set
+        :return:
+        """
         ReadMeasure = pd.read_csv(path_erweiter + 'Measure_Umgewandelt.csv', sep=';', decimal=',')
         ReadMeasure = ReadMeasure.drop(['P-KennungAnonym'], axis=1)
-        X_test = ReadMeasure.drop(['P-Altersklasse'], axis=1)
-        y_test = ReadMeasure['P-Altersklasse']
-        clf = self.learning_model.predict(X_test)
-        cm = confusion_matrix(y_test, clf)
-        print(" confusion Matrix 100")
-        print(cm)
-        # accuracy
-        accuracy = np.sum(np.diagonal(cm)) / np.sum(cm)
-        print(accuracy)
-        return cm, accuracy
+        X_train = ReadMeasure.drop(['P-Altersklasse'], axis=1)
+        y_train = ReadMeasure['P-Altersklasse']
+        clf = self.learning_model.fit(X_train,y_train)
+        ## save predictive Model
+        joblib.dump(clf, path_final +'predictive_model.pkl')
 
-    def Predictve_Modell(self):
+    def Predicted_data(self):
         ReadToPredict = pd.read_csv(path_orignalFiles + 'to_predict.csv', sep=';', decimal=',').values
+        clf = joblib.load(path_final + 'predictive_model.pkl')
+
         uti = utis.Utility()
         to_predict = uti.To_Prdicted()
+
         clf = self.learning_model.predict(to_predict)
         print(clf)
-        uti.write_predicted(clf,'Predicted2.csv')
+        uti.write_predicted(clf,'my_prediction.csv')

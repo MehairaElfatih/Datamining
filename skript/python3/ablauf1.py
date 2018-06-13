@@ -157,13 +157,8 @@ cm90, accuracy90, dauert=cv.generated_model_90()
 ModellParamdict = {'name': ModellName, 'Accuracy': accuracy90,'TestFehle': 1 - accuracy90, 'Parameter': Parameter, 'seed': seed, 'Dauert':dauert}
 perf = uty.Utility()
 perf.writePerformanceModell(ModellParamdict,'performance_90.csv')
-#expo.konfusion_Marix(cm90,accuracy90 ,'confusionMatrix90%_Norm')
+expo.konfusion_Marix(cm90,accuracy90 ,'confusionMatrix90%_Norm')
 
 ############################################################################
-#cmtest,accuracytes = cv.Apply_model_Test()
-#expo.konfusion_Marix(cmtest,accuracytes ,'confusionMatrixTes__Norm%')
-
-cm100,accuracy100 = cv.Apply_model_100()
-#expo.konfusion_Marix(cm100,accuracy100 ,'confusionMatrix100_Norm%')
-
-#cv.Predictve_Modell()
+cv.generate_predictive()
+cv.Predicted_data()

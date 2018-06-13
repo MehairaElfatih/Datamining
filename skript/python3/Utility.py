@@ -84,6 +84,11 @@ class Utility :
         return self.ReadToPedict
 
     def write_predicted(self,predicted,filesname):
+
+
+        #print(self.ReadToPedict['P-Geschlecht'].replace('1','m'))
+
+
         dfpredicted = pd.DataFrame(predicted,columns=['Predicted_Altersklasse'])
         # P_Altersklasse : '20-29 = 0', '30-39 = 1', '40-49 = 2', '50-59 =3','60-69=4'
         dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(0,'20-29')
@@ -92,8 +97,12 @@ class Utility :
         dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(3,'50-59')
         dfpredicted['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse'].replace(4,'60-69')
 
-        #print(dfpredicted)
-        dfpredicted.to_csv(path_final + filesname, sep=';')
+        self.ReadToPedict['Predicted_Altersklasse'] = dfpredicted['Predicted_Altersklasse']
+
+        self.ReadToPedict['P-Geschlecht'] = self.ReadToPedict['P-Geschlecht'].replace('1','m')
+        self.ReadToPedict['P-Geschlecht'] = self.ReadToPedict['P-Geschlecht'].replace('0', 'w')
+
+        self.ReadToPedict.to_csv(path_final + filesname, sep=';',float_format='%.9f')
 
 
     def writePerformanceModell(self, ModellParmeter, filename):
