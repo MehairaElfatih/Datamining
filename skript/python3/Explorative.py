@@ -54,9 +54,36 @@ class Explorative:
         plt.savefig(path_exploration + titletest + '.pdf')
 
     def boxsplot(self, df):
-        print("romeo")
-        plt.matshow(df.corr)
-        plt.show()
+        measures_head = list(df.head(0))
+        sns.set_style("whitegrid")
+        y_axes = "P-Altersklasse"
+        for x in measures_head[0::4]:
+            index = measures_head.index(x)
+            if (index == 92):
+                ax1 = plt.subplot(221)
+                sns.boxplot(x=x, y=y_axes, data=df, orient="h", palette="Set2")
+
+                ax2 = plt.subplot(222, sharey=ax1)
+                sns.boxplot(x=measures_head[index + 1], y=y_axes, data=df, orient="h", palette="Set2")
+
+                ax3 = plt.subplot(223, sharey=ax1)
+                sns.boxplot(x=measures_head[index + 2], y=y_axes, data=df, orient="h", palette="Set2")
+                plt.savefig(path_exploration + 'BoxPlt_wichtigermerkmal' + str(x) + '.png')
+                plt.show()
+            else:
+                ax1 = plt.subplot(221)
+                sns.boxplot(x=x, y=y_axes, data=df, orient="h", palette="Set2")
+
+                ax2 = plt.subplot(222, sharey=ax1)
+                sns.boxplot(x=measures_head[index + 1], y=y_axes, data=df, orient="h", palette="Set2")
+
+                ax3 = plt.subplot(223, sharey=ax1)
+                sns.boxplot(x=measures_head[index + 2], y=y_axes, data=df, orient="h", palette="Set2")
+
+                ax3 = plt.subplot(224, sharey=ax1)
+                sns.boxplot(x=measures_head[index + 3], y=y_axes, data=df, orient="h", palette="Set2")
+                plt.savefig(path_exploration + 'BoxPlt_wichtigermerkmal' + str(x) + '.png')
+                plt.show()
 
     # Von welchen Merkmalen hängt die Klasse stark ab (Korrelation)?
     def korrelation(self, df):
@@ -126,15 +153,35 @@ class Explorative:
 
     # Bivariate Abhängigkeiten: Korrelationsmatrix der Merkmale, stärkste Zusammenhänge, Streudiagramm Merkmal1 vs. Merkmal2
     def wichtiger_merkmale(self,df):
-        # Boxplot wichtiger Merkmale über der Klasse
-        # http://scikit-learn.org/stable/modules/feature_selection.html
-        X = df.loc[:, df.columns != 'P-Altersklasse'].values
-        y = df['P-Altersklasse'].values
-        print(X.shape)
-        X_new = SelectKBest(f_classif, k=94).fit_transform(X,y)
-        print(type(X_new))
-        plt.plot(X_new[0], X_new[1], 'bo')
-        plt.savefig(path_exploration + 'wichtige_merkmale' + '.pdf')
+        # # Boxplot wichtiger Merkmale über der Klasse
+        # # http://scikit-learn.org/stable/modules/feature_selection.html
+        # X = df.loc[:, df.columns != 'P-Altersklasse'].values
+        # y = df['P-Altersklasse'].values
+        # print(X.shape)
+        # X_new = SelectKBest(f_classif, k=94).fit_transform(X,y)
+        # print(type(X_new))
+        # plt.yticks(y)
+        # plt.plot(X_new[0], X_new[1], 'bo')
+        # plt.savefig(path_exploration + 'wichtige_merkmale' + '.pdf')
+        correlationhight = {}
+        measures_head = list(df.head(0))
+        for n in measures_head:
+            correlationhight[n] = df[n].corr(df['P-Altersklasse'])
+            if (-0.2 < df[n].corr(df['P-Altersklasse']) < 0.2):
+                pass
+                #print("Low correlation")
+                #print(n + " " + str(df[n].corr(df['P-Altersklasse'])))
+            elif (-1.0 < df[n].corr(df['P-Altersklasse']) < -0.4 or 0.4 < df[n].corr(
+                    df['P-Altersklasse']) < 1.0):
+                pass
+        dfcorrelat = pd.DataFrame.from_dict(correlationhight,orient='index')
+
+        plt.bar(range(len(correlationhight)), list(correlationhight.values()), align='center')
+        plt.xticks(range(len(correlationhight)), list(correlationhight.keys()))
+        #plt.figure(num=None, figsize=(8, 8), dpi=80, facecolor='w', edgecolor='k')
+        plt.savefig(path_exploration + 'Korrelation_Klasse_Merkmal' + '.png')
+        plt.show()
+        print(dfcorrelat)
 
     def Plot_perfromance (self,df):
         perform_svc = df.loc[df['name'] =='SVC',]

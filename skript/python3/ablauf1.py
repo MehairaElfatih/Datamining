@@ -170,6 +170,6 @@ test = expo.ReadTrain
 measure,train,test = perf.create_test_train_data()
 #expo.Plot_perfromance90(perform90)
 #expo.Plot_perfromance(perform)
-expo.korrelation(measure)
+expo.wichtiger_merkmale(measure)
 
 
